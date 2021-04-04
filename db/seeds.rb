@@ -15,13 +15,13 @@ contacts = [
   {
     lastname:  "Rodriguez",
     firstname: "Bob",
-    emails: "bob@yahoo.com",
+    email: "bob@yahoo.com",
     tags: ["Lead", "Stage2", "LowValue"]
   },
   {
     lastname:  "Smith",
     firstname: "Cathy",
-    emails: "cathy@lycos.com",
+    email: "cathy@lycos.com",
     tags: ["Churned", "Finalized", "RealEstate"]
   }
 ]
@@ -29,7 +29,7 @@ contacts = [
 contacts.each { |contact|
   c = Contact.find_or_create_by(
     lastName: contact[:lastname],
-    firstName: contact[:lastname],
+    firstName: contact[:firstname],
     email: contact[:email]
   )
   contact[:tags].each { |tag| c.tags << Tag.find_or_create_by(tag: tag) }
