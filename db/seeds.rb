@@ -5,3 +5,34 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+contacts = [
+  {
+    lastname:  "Stevens",
+    firstname: "Andrew",
+    email: "andrew@company.com",
+    tags: ["Lead", "HighValue", "Finalized"]
+  },
+  {
+    lastname:  "Rodriguez",
+    firstname: "Bob",
+    emails: "bob@yahoo.com",
+    tags: ["Lead", "Stage2", "LowValue"]
+  },
+  {
+    lastname:  "Smith",
+    firstname: "Cathy",
+    emails: "cathy@lycos.com",
+    tags: ["Churned", "Finalized", "RealEstate"]
+  }
+]
+
+contacts.each { |contact|
+  c = Contact.find_or_create_by(
+    lastName: contact[:lastname],
+    firstName: contact[:lastname],
+    email: contact[:email]
+  )
+  contact[:tags].each { |tag| c.tags << Tag.find_or_create_by(tag: tag) }
+
+
+  }
