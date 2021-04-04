@@ -25,6 +25,8 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
+        update_contact_tags
+
         format.html { redirect_to @contact, notice: "Contact was successfully created." }
         format.json { render :show, status: :created, location: @contact }
       else
@@ -38,6 +40,8 @@ class ContactsController < ApplicationController
   def update
     respond_to do |format|
       if @contact.update(contact_params)
+        update_contact_tags
+
         format.html { redirect_to @contact, notice: "Contact was successfully updated." }
         format.json { render :show, status: :ok, location: @contact }
       else
@@ -62,8 +66,17 @@ class ContactsController < ApplicationController
       @contact = Contact.find(params[:id])
     end
 
+    def contact_tag_params
+     params.require(:contact).permit({:tag_ids => []})
+    end
     # Only allow a list of trusted parameters through.
     def contact_params
       params.require(:contact).permit(:lastName, :firstName, :email)
+    end
+
+    def update_contact_tags
+      tag_ids = contact_tag_params[:tag_ids].delete_if {|tag| tag == ""}
+      @tags = tag_ids.map {|id| Tag.find(id)}
+      @contact.update(tags: @tags)
     end
 end
